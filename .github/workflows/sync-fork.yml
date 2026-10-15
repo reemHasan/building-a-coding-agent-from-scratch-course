@@ -1,0 +1,24 @@
+name: Sync fork with upstream
+
+on:
+  schedule:
+    # Every Wednesday at 08:00 UTC
+    - cron: "0 8 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync fork with original repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          gh repo sync "$REPOSITORY" \
+            --source decodingai-magazine/building-a-coding-agent-from-scratch-course \
+            --branch main
